@@ -1945,10 +1945,11 @@ function resetGame() {
   });
   generateAllDays();
 }
-function startGame() { Sfx.init(); resetGame(); fadeTo(showDay); }
+function startGame() { window.GameTracker && GameTracker.milestone('게임 시작', 1); Sfx.init(); resetGame(); fadeTo(showDay); }
 
 /* ---------- 일차 안내 ---------- */
 function showDay() {
+  window.GameTracker && GameTracker.milestone((G.day + 1) + '일차', G.day + 2);
   G.mode = 'day'; showScreen('scrDay');
   const di = G.day, news = RULES.filter(r => r.day === di);
   $('#dayTitle').textContent = `제 ${di + 1} 일`;
@@ -2078,6 +2079,7 @@ const ENDINGS = {
 };
 function endGame(kind) { if (G.ending) return; G.ending = kind; fadeTo(() => showEnd(kind)); }
 function showEnd(kind) {
+  window.GameTracker && GameTracker.milestone('엔딩: ' + ((ENDINGS[kind] && ENDINGS[kind].title) || kind), 99);
   const E = ENDINGS[kind], s = G.stats;
   G.mode = 'end'; showScreen('scrEnd'); toggleLoupe(false); hush(); Sfx.setTension(0);
   $('#endKind').textContent = E.kind; $('#endTitle').textContent = E.title;
@@ -2190,5 +2192,7 @@ showScreen('scrTitle');
 requestAnimationFrame(frame);
 
 </script>
+<!-- 게임 분석 트래커 (game-analytics) -->
+<script src="https://sunny8197783.github.io/game-analytics/tracker/game-tracker.js" data-game="seller_of_the_border" data-url="https://okrgwnvlsissnenkznhf.supabase.co" data-key="sb_publishable_LiRvhvhJk1Gb0icL9RJ7vA_uO4Ckf13"></script>
 </body>
 </html>
